@@ -9,6 +9,12 @@ npm install
 ```
 node server.js
 ```
+Or 
+
+To make sure the server reloads every time you make a change to the code base, you can run:
+```
+nodemon server
+```
 
 ### Install mysql on Ubuntu 20.04:
 
