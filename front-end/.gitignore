@@ -1,0 +1,28 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# /delete
+
+# images
+
+# **/*.jpg
+# **/*.jpeg
+# **/*.png
+# !/public/*.jpg
+# !/public/*.jpeg
+# !/public/*.png
+
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+#testing
+/build
+
+# environment variables
+.env
+
+
+
+
