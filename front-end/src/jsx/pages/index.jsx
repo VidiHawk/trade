@@ -1,5 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import EventBus from "../../common/EventBus";
+import { logout } from "../../actions/auth";
+import { clearMessage } from "../../actions/message";
 import HomeChart from "../charts/home";
 // import DashChart from "../charts/dash";
 // import EosChart from "../charts/eos";
@@ -15,12 +19,16 @@ import Footer1 from "../layout/footer1";
 // import { Row, Col, Card } from 'react-bootstrap';
 import Header1 from "../layout/header1";
 import Bottom from "./../element/bottom";
+import { chartInitData } from "../../helpers/charts-config";
 
 class Homepage extends React.Component {
   constructor(props) {
     super(props);
+    this.logOut = this.logOut.bind(this);
     this.state = {
-      // items: [],
+      showModeratorBoard: false,
+      showAdminBoard: false,
+      currentUser: undefined,
       eurUsd: 1,
       eurGbp: 1,
       cnyEur: 1,
@@ -29,135 +37,15 @@ class Homepage extends React.Component {
       gbpEurFluctuation: 0,
       cnyEurFluctuation: 0,
       jpyEurFluctuation: 0,
-      eurHistoricalRates: [
-        "2",
-        "3",
-        "2",
-        "1",
-        "2",
-        "3",
-        "2",
-        "1",
-        "2",
-        "3",
-        "4",
-        "3",
-        "2",
-        "1",
-        "0",
-        "1",
-        "2",
-        "3",
-        "4",
-        "3",
-        "2",
-        "1",
-        "0",
-        "1",
-        "2",
-        "3",
-        "4",
-        "3",
-        "2",
-        "1",
-      ],
-      gbpHistoricalRates: [
-        "2",
-        "3",
-        "2",
-        "1",
-        "2",
-        "3",
-        "2",
-        "1",
-        "2",
-        "3",
-        "4",
-        "3",
-        "2",
-        "1",
-        "0",
-        "1",
-        "2",
-        "3",
-        "4",
-        "3",
-        "2",
-        "1",
-        "0",
-        "1",
-        "2",
-        "3",
-        "4",
-        "3",
-        "2",
-        "1",
-      ],
-      jpyHistoricalRates: [
-        "2",
-        "3",
-        "2",
-        "1",
-        "2",
-        "3",
-        "2",
-        "1",
-        "2",
-        "3",
-        "4",
-        "3",
-        "2",
-        "1",
-        "0",
-        "1",
-        "2",
-        "3",
-        "4",
-        "3",
-        "2",
-        "1",
-        "0",
-        "1",
-        "2",
-        "3",
-        "4",
-        "3",
-        "2",
-        "1",
-      ],
-      cnyHistoricalRates: [
-        "2",
-        "3",
-        "2",
-        "1",
-        "2",
-        "3",
-        "2",
-        "1",
-        "2",
-        "3",
-        "4",
-        "3",
-        "2",
-        "1",
-        "0",
-        "1",
-        "2",
-        "3",
-        "4",
-        "3",
-        "2",
-        "1",
-        "0",
-        "1",
-        "2",
-        "3",
-        "4",
-        "3",
-        "2",
-        "1",
-      ],
+      eurHistoricalRates: chartInitData,
+      gbpHistoricalRates: chartInitData,
+      jpyHistoricalRates: chartInitData,
+      cnyHistoricalRates: chartInitData,
     };
+
+    // history.listen((location) => {
+    //   props.dispatch(clearMessage()); // clear message when changing location
+    // });
   }
 
   // cross-currency triangulation formula EUR/GBP = EUR/USD divided by GBP/USD
@@ -167,6 +55,32 @@ class Homepage extends React.Component {
     this.fluctuationRate(30);
     this.eurRates();
     this.usdRates();
+    const user = this.props.user;
+
+    if (user) {
+      this.setState({
+        currentUser: user,
+        showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+      });
+    }
+
+    EventBus.on("logout", () => {
+      this.logOut();
+    });
+  }
+
+  componentWillUnmount() {
+    EventBus.remove("logout");
+  }
+
+  logOut() {
+    this.props.dispatch(logout());
+    this.setState({
+      showModeratorBoard: false,
+      showAdminBoard: false,
+      currentUser: undefined,
+    });
   }
 
   dateToday = () => {
@@ -311,6 +225,9 @@ class Homepage extends React.Component {
       gbpHistoricalRates,
       jpyHistoricalRates,
       cnyHistoricalRates,
+      currentUser,
+      showModeratorBoard,
+      showAdminBoard,
     } = this.state;
 
     // const midMarket = eurUsd ? this.formatNumber(eurUsd, 4) : 0;
@@ -353,8 +270,9 @@ class Homepage extends React.Component {
                   <p>Fast and secure payments all over the world</p>
                 </div>
                 <div className="intro-btn">
-                  <Link to={"./signin"} className="btn btn-primary">
-                    Get Started
+                  {/* "/register" */}
+                  <Link to={"./signup"} className="btn btn-primary">
+                    Sign Up
                   </Link>
                   {/* <Link to={"#"} className="btn btn-outline-primary">
                   Browse Now
@@ -422,6 +340,7 @@ class Homepage extends React.Component {
                       </div>
                     </div>
                     <Link
+                      // "/login"
                       to={"./signin"}
                       type="submit"
                       name="submit"
@@ -1251,4 +1170,11 @@ class Homepage extends React.Component {
   }
 }
 
-export default Homepage;
+function mapStateToProps(state) {
+  const { user } = state.auth;
+  return {
+    user,
+  };
+}
+
+export default connect(mapStateToProps)(Homepage);

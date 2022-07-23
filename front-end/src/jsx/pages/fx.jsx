@@ -9,31 +9,31 @@ import Header2 from "../layout/header2";
 import Sidebar from "../layout/sidebar";
 import TimeDatePicker from "../element/datepicker";
 
-const currencyCloud = require("currency-cloud");
-const API_KEY = process.env.REACT_APP_API_KEY;
-const LOGIN_ID = process.env.REACT_APP_LOGIN_ID;
+// const currencyCloud = require("currency-cloud");
+// const API_KEY = process.env.REACT_APP_API_KEY;
+// const LOGIN_ID = process.env.REACT_APP_LOGIN_ID;
 
-console.log("API_KEY: ", process.env.REACT_APP_API_KEY);
-console.log("LOGIN_ID: ", process.env.REACT_APP_LOGIN_ID);
+// console.log("API_KEY: ", process.env.REACT_APP_API_KEY);
+// console.log("LOGIN_ID: ", process.env.REACT_APP_LOGIN_ID);
 
-currencyCloud.authentication
-  .login({
-    environment: "demo",
-    loginId: LOGIN_ID,
-    apiKey: API_KEY,
-  })
-  .then(currencyCloud.reference.getAvailableCurrencies)
-  .then(function (res) {
-    console.log(
-      "available currencies: " + JSON.stringify(res.currencies, null, 2)
-    );
-  })
-  .then(currencyCloud.balances.find)
-  .then(function (res) {
-    console.log("balances: " + JSON.stringify(res.balances, null, 2));
-  })
-  .then(currencyCloud.authentication.logout)
-  .catch(console.log);
+// currencyCloud.authentication
+//   .login({
+//     environment: "demo",
+//     loginId: LOGIN_ID,
+//     apiKey: API_KEY,
+//   })
+//   .then(currencyCloud.reference.getAvailableCurrencies)
+//   .then(function (res) {
+//     console.log(
+//       "available currencies: " + JSON.stringify(res.currencies, null, 2)
+//     );
+//   })
+//   .then(currencyCloud.balances.find)
+//   .then(function (res) {
+//     console.log("balances: " + JSON.stringify(res.balances, null, 2));
+//   })
+//   .then(currencyCloud.authentication.logout)
+//   .catch(console.log);
 
 function FX() {
   return (

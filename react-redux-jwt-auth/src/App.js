@@ -82,7 +82,7 @@ class App extends Component {
                   Home
                 </Link>
               </li>
-
+              {/* //<-- not assigned ----------------------->>// */}
               {showModeratorBoard && (
                 <li className="nav-item">
                   <Link to={"/mod"} className="nav-link">
@@ -137,7 +137,7 @@ class App extends Component {
               </div>
             )}
           </nav>
-
+          {/* //<-- not assigned ----------------------->>// */}
           <div className="container mt-3">
             <Switch>
               <Route exact path={["/", "/home"]} component={Home} />

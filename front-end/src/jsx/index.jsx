@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
+import { history } from "../helpers/history";
+
 import Homepage from "./pages/index";
 import FX from "./pages/fx";
 import Payments from "./pages/payments";
@@ -26,12 +28,21 @@ import VerifyStep5 from "./pages/verify-step-5";
 import VerifyStep6 from "./pages/verify-step-6";
 import AccountAffiliate from "./pages/account-affiliate";
 // import AccountApi from "./pages-optional/account-api";
+import Home from "../components/home.component";
+import Login from "../components/login.component";
+import Register from "../components/register.component";
+import Profile from "../components/profile.component";
+import BoardUser from "../components/board-user.component";
+import BoardModerator from "../components/board-moderator.component";
+import BoardAdmin from "../components/board-admin.component";
 
 class Index extends Component {
   render() {
     return (
       <>
-        <BrowserRouter>
+        <Router history={history}>
+          {/* <BrowserRouter> */}
+          {/* note: using BrowserRouter might be more efficient than using Router */}
           <div id="main-wrapper">
             <Switch>
               <Route path="/" exact component={Homepage} />
@@ -61,9 +72,18 @@ class Index extends Component {
 
               <Route path="/account-affiliate" component={AccountAffiliate} />
               {/* <Route path="/account-api" component={AccountApi} /> */}
+
+              <Route exact path={["/home"]} component={Home} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/profile" component={Profile} />
+              <Route path="/user" component={BoardUser} />
+              <Route path="/mod" component={BoardModerator} />
+              <Route path="/admin" component={BoardAdmin} />
             </Switch>
           </div>
-        </BrowserRouter>
+          {/* </BrowserRouter> */}
+        </Router>
       </>
     );
   }
