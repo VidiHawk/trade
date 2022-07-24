@@ -28,6 +28,7 @@ import VerifyStep5 from "./pages/verify-step-5";
 import VerifyStep6 from "./pages/verify-step-6";
 import AccountAffiliate from "./pages/account-affiliate";
 // import AccountApi from "./pages-optional/account-api";
+import { clearMessage } from "../actions/message";
 import Home from "../components/home.component";
 import Login from "../components/login.component";
 import Register from "../components/register.component";
@@ -37,6 +38,13 @@ import BoardModerator from "../components/board-moderator.component";
 import BoardAdmin from "../components/board-admin.component";
 
 class Index extends Component {
+  constructor(props) {
+    super(props);
+    history.listen((location) => {
+      props.dispatch(clearMessage()); // clear message when changing location
+    });
+  }
+
   render() {
     return (
       <>

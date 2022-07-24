@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import EventBus from "../../common/EventBus";
 import { logout } from "../../actions/auth";
-import { clearMessage } from "../../actions/message";
 import HomeChart from "../charts/home";
 // import DashChart from "../charts/dash";
 // import EosChart from "../charts/eos";
@@ -42,10 +41,6 @@ class Homepage extends React.Component {
       jpyHistoricalRates: chartInitData,
       cnyHistoricalRates: chartInitData,
     };
-
-    // history.listen((location) => {
-    //   props.dispatch(clearMessage()); // clear message when changing location
-    // });
   }
 
   // cross-currency triangulation formula EUR/GBP = EUR/USD divided by GBP/USD
@@ -256,7 +251,7 @@ class Homepage extends React.Component {
 
     return (
       <>
-        <Header1 />
+        <Header1 props={currentUser} />
         <div className="intro" id="payments">
           <div className="container">
             <div className="row justify-content-between align-items-center">

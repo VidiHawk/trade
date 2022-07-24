@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactApexChart from "react-apexcharts";
 import { memo } from "react";
+import { chartInitData, xaxisInitData } from "../../helpers/charts-config";
 
 class HomeChart extends Component {
   constructor(props) {
@@ -10,38 +11,7 @@ class HomeChart extends Component {
       series: [
         {
           name: "fx-chart",
-          data: [
-            "8",
-            "7",
-            "5",
-            "6",
-            "8",
-            "9",
-            "7",
-            "5",
-            "5",
-            "7",
-            "8",
-            "7",
-            "5",
-            "6",
-            "7",
-            "5",
-            "8",
-            "6",
-            "5",
-            "7",
-            "8",
-            "7",
-            "5",
-            "6",
-            "8",
-            "9",
-            "8",
-            "6",
-            "5",
-            "7",
-          ],
+          data: chartInitData,
         },
       ],
       options: {
@@ -74,38 +44,7 @@ class HomeChart extends Component {
           },
         },
         xaxis: {
-          categories: [
-            "J",
-            "F",
-            "M",
-            "A",
-            "M",
-            "J",
-            "J",
-            "A",
-            "S",
-            "O",
-            "N",
-            "D",
-            "J",
-            "F",
-            "M",
-            "A",
-            "M",
-            "J",
-            "J",
-            "A",
-            "S",
-            "O",
-            "N",
-            "D",
-            "J",
-            "F",
-            "M",
-            "A",
-            "M",
-            "J",
-          ],
+          categories: xaxisInitData,
           axisBorder: {
             show: false,
           },
@@ -132,19 +71,8 @@ class HomeChart extends Component {
       ],
     };
   }
-  //   static getDerivedStateFromProps(props) {
-  //   return {
-  //     series: [
-  //       {
-  //         data: [ "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1" ,"1", "1", "1", "1", "8", "9", "8", "6", "5", "7" ],
-  //       },
-  //     ],
-  //   };
-  // }
 
   render() {
-    // console.log("data: ", this.props.historicalData)
-
     return (
       <ReactApexChart
         options={this.state.options}
