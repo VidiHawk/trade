@@ -3,20 +3,26 @@ import { Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ScrollspyNav from "react-scrollspy-nav";
 import { memo } from "react";
+import EventBus from "../../common/EventBus";
+import { logout } from "../../actions/auth";
 
 class Header1 extends Component {
   constructor(props) {
     super(props);
+    this.logOut = this.logOut.bind(this);
+    this.state = {
+      currentUser: undefined,
+    };
   }
 
-  static getDerivedStateFromProps(props) {
-    return {
-      series: [
-        {
-          data: props.currentUser,
-        },
-      ],
-    };
+  componentDidMount() {
+    EventBus.on("logout", () => {
+      this.logOut();
+    });
+  }
+
+  componentWillUnmount() {
+    EventBus.remove("logout");
   }
 
   logOut() {
@@ -28,9 +34,19 @@ class Header1 extends Component {
     });
   }
 
+  // static getDerivedStateFromProps(props) {
+  //   return {
+  //     series: [
+  //       {
+  //         data: props.currentUser,
+  //       },
+  //     ],
+  //   };
+  // }
+
   render() {
     const currentUser = this.state;
-
+    console.log("currentUser: ", currentUser);
     return (
       <>
         <div className="header">

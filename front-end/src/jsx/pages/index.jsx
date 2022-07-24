@@ -251,7 +251,8 @@ class Homepage extends React.Component {
 
     return (
       <>
-        <Header1 props={currentUser} />
+        {/* <Header1 props={currentUser} /> */}
+        <Header1 />
         <div className="intro" id="payments">
           <div className="container">
             <div className="row justify-content-between align-items-center">
