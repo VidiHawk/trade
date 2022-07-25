@@ -12,7 +12,6 @@ class Header1 extends Component {
     this.logOut = this.logOut.bind(this);
 
     this.state = {
-      showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
     };
@@ -24,7 +23,6 @@ class Header1 extends Component {
     if (user) {
       this.setState({
         currentUser: user,
-        showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
     }
@@ -41,17 +39,10 @@ class Header1 extends Component {
   logOut() {
     AuthService.logout();
     this.setState({
-      showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
     });
   }
-
-  // static getDerivedStateFromProps(props) {
-  //   return {
-  //     currentUser: props.data,
-  //   };
-  // }
 
   render() {
     const { currentUser } = this.state;
@@ -116,7 +107,7 @@ class Header1 extends Component {
                           </Nav.Item>
                           {currentUser && (
                             <Nav.Link
-                              className="nav-Nav.link"
+                              className="btn btn-success ms-3"
                               href="./account-overview"
                             >
                               Dashboard
@@ -130,7 +121,7 @@ class Header1 extends Component {
                       <div className="signin-btn">
                         <Link
                           className="btn btn-primary ms-3"
-                          to={"/signin"}
+                          to={"./"}
                           onClick={this.logOut}
                         >
                           Sign out

@@ -55,7 +55,7 @@ export default class Signin extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.email, this.state.password).then(
         () => {
-          this.props.history.push("./otp-1");
+          this.props.history.push("/otp-1");
           window.location.reload();
         },
         (error) => {
@@ -106,87 +106,81 @@ export default class Signin extends Component {
                         this.form = c;
                       }}
                     >
-                      <form
-                        method="post"
-                        name="myform"
-                        className="signin_validate"
-                      >
-                        <div className="mb-3">
-                          <label>Email</label>
-                          <Input
-                            type="email"
-                            className="form-control"
-                            placeholder="hello@example.com"
-                            name="email"
-                            value={this.state.email}
-                            onChange={this.onChangeEmail}
-                            validations={[required]}
-                          />
-                        </div>
-                        <div className="mb-3">
-                          <label>Password</label>
-                          <Input
-                            type="password"
-                            className="form-control"
-                            placeholder="Password"
-                            name="password"
-                            value={this.state.password}
-                            onChange={this.onChangePassword}
-                            validations={[required]}
-                          />
-                        </div>
-                        {this.state.message && (
-                          <div className="form-control">
-                            <div className="alert alert-danger" role="alert">
-                              {this.state.message}
-                            </div>
-                          </div>
-                        )}
-                        <div className="row d-flex justify-content-between mt-4 mb-2">
-                          <div className="mb-3 mb-0">
-                            <label className="toggle">
-                              <input
-                                className="toggle-checkbox"
-                                type="checkbox"
-                              />
-                              <span className="toggle-switch"></span>
-                              <span className="toggle-label">Remember me</span>
-                            </label>
-                          </div>
-                          <div className="mb-3 mb-0">
-                            <Link to={"./reset"}>Forgot Password?</Link>
+                      <div className="mb-3">
+                        <label>Email</label>
+                        <Input
+                          type="email"
+                          className="form-control"
+                          placeholder="hello@example.com"
+                          name="email"
+                          value={this.state.email}
+                          onChange={this.onChangeEmail}
+                          validations={[required]}
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label>Password</label>
+                        <Input
+                          type="password"
+                          className="form-control"
+                          placeholder="Password"
+                          name="password"
+                          value={this.state.password}
+                          onChange={this.onChangePassword}
+                          validations={[required]}
+                        />
+                      </div>
+                      {this.state.message && (
+                        <div className="form-control">
+                          <div className="alert alert-danger" role="alert">
+                            {this.state.message}
                           </div>
                         </div>
-                        {this.state.loading && (
-                          <span className="spinner-border spinner-border-sm"></span>
-                        )}
-                        <div className="text-center">
-                          <button
-                            className="btn btn-success btn-block"
-                            disabled={this.state.loading}
-                          >
-                            {this.state.loading && (
-                              <span className="spinner-border spinner-border-sm"></span>
-                            )}
-                            <span>Sign in</span>
-                          </button>
+                      )}
+                      <div className="row d-flex justify-content-between mt-4 mb-2">
+                        <div className="mb-3 mb-0">
+                          <label className="toggle">
+                            <input
+                              className="toggle-checkbox"
+                              type="checkbox"
+                            />
+                            <span className="toggle-switch"></span>
+                            <span className="toggle-label">Remember me</span>
+                          </label>
+                        </div>
+                        <div className="mb-3 mb-0">
+                          <Link to={"./reset"}>Forgot Password?</Link>
+                        </div>
+                      </div>
+                      {this.state.loading && (
+                        <span className="spinner-border spinner-border-sm"></span>
+                      )}
+                      <div className="text-center">
+                        <button
+                          className="btn btn-success btn-block"
+                          disabled={this.state.loading}
+                        >
+                          {this.state.loading && (
+                            <span className="spinner-border spinner-border-sm"></span>
+                          )}
+                          <span>Sign in</span>
+                        </button>
 
-                          <CheckButton
-                            className="btn btn-success btn-block"
-                            style={{ display: "none" }}
-                            ref={(c) => {
-                              this.checkBtn = c;
-                            }}
-                          />
-                          {/* 
+                        <CheckButton
+                          // className="btn btn-success btn-block"
+                          style={{ display: "none" }}
+                          ref={(c) => {
+                            this.checkBtn = c;
+                          }}
+                        />
+                        {/* 
                           <Link
                             to={"./otp-1"}
                             className="btn btn-success btn-block"
                           >
                             Sign in
                           </Link> */}
-                        </div>
-                      </form>
+                      </div> 
                     </Form>
                     <div className="new-account mt-3">
                       <p>

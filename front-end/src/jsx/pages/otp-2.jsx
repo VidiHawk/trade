@@ -35,7 +35,7 @@ function Otp2() {
                       <input
                         type="text"
                         className="form-control text-center font-weight-bold"
-                        value=""
+                        defaultValue=""
                       />
                     </div>
                     <div className="text-center">
