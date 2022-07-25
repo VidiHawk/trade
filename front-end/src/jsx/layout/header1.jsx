@@ -4,18 +4,31 @@ import { Link } from "react-router-dom";
 import ScrollspyNav from "react-scrollspy-nav";
 import { memo } from "react";
 import EventBus from "../../common/EventBus";
-import { logout } from "../../actions/auth";
+import AuthService from "../../services/auth.service";
 
 class Header1 extends Component {
   constructor(props) {
     super(props);
     this.logOut = this.logOut.bind(this);
+
     this.state = {
+      showModeratorBoard: false,
+      showAdminBoard: false,
       currentUser: undefined,
     };
   }
 
   componentDidMount() {
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      this.setState({
+        currentUser: user,
+        showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+      });
+    }
+
     EventBus.on("logout", () => {
       this.logOut();
     });
@@ -26,26 +39,22 @@ class Header1 extends Component {
   }
 
   logOut() {
-    this.props.dispatch(logout());
+    AuthService.logout();
     this.setState({
-      // showModeratorBoard: false,
-      // showAdminBoard: false,
+      showModeratorBoard: false,
+      showAdminBoard: false,
       currentUser: undefined,
     });
   }
 
   // static getDerivedStateFromProps(props) {
   //   return {
-  //     series: [
-  //       {
-  //         data: props.currentUser,
-  //       },
-  //     ],
+  //     currentUser: props.data,
   //   };
   // }
 
   render() {
-    const currentUser = this.state;
+    const { currentUser } = this.state;
     console.log("currentUser: ", currentUser);
     return (
       <>

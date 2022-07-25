@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { history } from '../helpers/history';
+import { withRouter } from "react-router-dom";
 
 const parseJwt = (token) => {
   try {
@@ -13,7 +13,7 @@ class AuthVerify extends Component {
   constructor(props) {
     super(props);
 
-    history.listen(() => {
+    props.history.listen(() => {
       const user = JSON.parse(localStorage.getItem("user"));
 
       if (user) {
@@ -31,4 +31,4 @@ class AuthVerify extends Component {
   }
 }
 
-export default AuthVerify;
+export default withRouter(AuthVerify);

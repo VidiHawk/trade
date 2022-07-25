@@ -1,6 +1,35 @@
 # VIDI FX
 
 
+## Project setup
+
+In the project directory, you can run:
+
+```
+npm install
+# or
+yarn install
+```
+
+### Set port
+.env
+```
+PORT=8081
+```
+
+### Run locally
+
+```
+npm start
+# or
+yarn start
+```
+
+Open [http://localhost:8081](http://localhost:8081) to view it in the browser.
+
+The page will reload if you make edits.
+
+
 ### Next steps
 
 - 
@@ -17,18 +46,17 @@
 - Trading view widget: https://github.com/rafaelklaessen/react-tradingview-widget 
 
 
-# React Redux JWT Authentication & Authorization architecture
+# Authentication & Authorization architecture
 
-React Redux Token Authentication architecture with JWT, LocalStorage, React Router, Axios and Bootstrap:
+React Token Authentication architecture with JWT, LocalStorage, React Router, Axios and Bootstrap:
 - JWT Authentication Flow for User Signup & User Login
-- Project Structure for React Redux JWT Authentication, LocalStorage, Router, Axios
-- Working with Redux Actions, Reducers, Store for Application state
+- Project Structure for React JWT Authentication with LocalStorage, React Router & Axios
 - Creating React Components with Form Validation
 - React Components for accessing protected Resources (Authorization)
 - Dynamic Navigation Bar in React App
 
 For more detail, please visit:
-> [React Redux JWT Authentication & Authorization example](https://bezkoder.com/react-redux-jwt-auth/)
+> [React (without Redux) JWT Authentication & Authorization example](https://bezkoder.com/react-jwt-auth/)
 
 > [React - How to Logout when Token is expired](https://www.bezkoder.com/react-logout-token-expired/)
 
@@ -38,33 +66,6 @@ For more detail, please visit:
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-### Set port
-.env
-```
-PORT=8081
-```
-
-## Project setup
-
-In the project directory, you can run:
-
-```
-npm install
-# or
-yarn install
-```
-
-### Run locally
-
-```
-npm start
-# or
-yarn start
-```
-
-Open [http://localhost:8081](http://localhost:8081) to view it in the browser.
-
-The page will reload if you make edits.
 
 ## Related Posts
 > [In-depth Introduction to JWT-JSON Web Token](https://bezkoder.com/jwt-json-web-token/)

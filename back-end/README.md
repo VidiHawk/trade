@@ -5,17 +5,6 @@
 npm install
 ```
 
-### Run
-```
-node server.js
-```
-Or 
-
-To make sure the server reloads every time you make a change to the code base, you can run:
-```
-nodemon server
-```
-
 ### Install mysql on Ubuntu 20.04:
 
 https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04
@@ -32,6 +21,31 @@ mysql> INSERT INTO roles VALUES (1, 'user', now(), now());
 mysql> INSERT INTO roles VALUES (2, 'moderator', now(), now());
 mysql> INSERT INTO roles VALUES (3, 'admin', now(), now());
 ```
+
+### create a .env file
+
+In the root directory, add a .env file with:
+```
+MYSQL_NAME=your_mysql_name
+MYSQL_KEY=your_mysql_password
+```
+
+### Run
+```
+node server.js
+```
+Or 
+
+To make sure the server reloads every time you make a change to the code base, you can run:
+```
+nodemon server
+```
+If nodemon is not installed on your system, you can install it by running:
+```
+sudo npm install nodemon --location=global 
+```
+
+
 
 ## Settings
 

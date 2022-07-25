@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactApexChart from "react-apexcharts";
 import { memo } from "react";
-import { chartInitData, xaxisInitData } from "../../helpers/charts-config";
+import { chartInitData, xaxisInitData } from "./charts-config";
 
 class HomeChart extends Component {
   constructor(props) {

@@ -40,7 +40,7 @@ function Otp2() {
                     </div>
                     <div className="text-center">
                       <Link
-                        to={"./dashboard"}
+                        to={"./account-overview"}
                         className="btn btn-success btn-block"
                       >
                         Verify

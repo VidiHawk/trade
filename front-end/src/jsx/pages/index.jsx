@@ -1,33 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import EventBus from "../../common/EventBus";
-import { logout } from "../../actions/auth";
 import HomeChart from "../charts/home";
-// import DashChart from "../charts/dash";
-// import EosChart from "../charts/eos";
-// import EthChart from "../charts/eth";
-// import LtcChart from "../charts/ltc";
-// import UsdChart from "../charts/usd";
-// import XrpChart from "../charts/xrp";
-// import XtzChart from "../charts/xtz";
-// import Testimonial from "../element/testimonial";
+import { chartInitData } from "../charts/charts-config";
 // import Sidebar from '../layout/sidebar';
 // import PageTitle from '../element/page-title';
 import Footer1 from "../layout/footer1";
 // import { Row, Col, Card } from 'react-bootstrap';
 import Header1 from "../layout/header1";
 import Bottom from "./../element/bottom";
-import { chartInitData } from "../../helpers/charts-config";
 
 class Homepage extends React.Component {
   constructor(props) {
     super(props);
-    this.logOut = this.logOut.bind(this);
     this.state = {
-      showModeratorBoard: false,
-      showAdminBoard: false,
-      currentUser: undefined,
       eurUsd: 1,
       eurGbp: 1,
       cnyEur: 1,
@@ -50,32 +35,6 @@ class Homepage extends React.Component {
     this.fluctuationRate(30);
     this.eurRates();
     this.usdRates();
-    const user = this.props.user;
-
-    if (user) {
-      this.setState({
-        currentUser: user,
-        showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
-        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-      });
-    }
-
-    EventBus.on("logout", () => {
-      this.logOut();
-    });
-  }
-
-  componentWillUnmount() {
-    EventBus.remove("logout");
-  }
-
-  logOut() {
-    this.props.dispatch(logout());
-    this.setState({
-      showModeratorBoard: false,
-      showAdminBoard: false,
-      currentUser: undefined,
-    });
   }
 
   dateToday = () => {
@@ -220,9 +179,6 @@ class Homepage extends React.Component {
       gbpHistoricalRates,
       jpyHistoricalRates,
       cnyHistoricalRates,
-      currentUser,
-      showModeratorBoard,
-      showAdminBoard,
     } = this.state;
 
     // const midMarket = eurUsd ? this.formatNumber(eurUsd, 4) : 0;
@@ -251,7 +207,6 @@ class Homepage extends React.Component {
 
     return (
       <>
-        {/* <Header1 props={currentUser} /> */}
         <Header1 />
         <div className="intro" id="payments">
           <div className="container">
@@ -1166,11 +1121,4 @@ class Homepage extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { user } = state.auth;
-  return {
-    user,
-  };
-}
-
-export default connect(mapStateToProps)(Homepage);
+export default Homepage;
