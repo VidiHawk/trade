@@ -11,32 +11,14 @@ import PageTitle from "../element/page-title";
 import TimeDatePicker from "../element/datepicker";
 import { Redirect } from "react-router-dom";
 import AuthService from "../../services/auth.service";
+import * as currencyCloud from "currency-cloud";
 
-// const currencyCloud = require("currency-cloud");
-// const API_KEY = process.env.REACT_APP_API_KEY;
-// const LOGIN_ID = process.env.REACT_APP_LOGIN_ID;
+const API_KEY = process.env.REACT_APP_API_KEY;
+const LOGIN_ID = process.env.REACT_APP_LOGIN_ID;
+const ENV = process.env.REACT_APP_ENV;
 
-// console.log("API_KEY: ", process.env.REACT_APP_API_KEY);
-// console.log("LOGIN_ID: ", process.env.REACT_APP_LOGIN_ID);
-
-// currencyCloud.authentication
-//   .login({
-//     environment: "demo",
-//     loginId: LOGIN_ID,
-//     apiKey: API_KEY,
-//   })
-//   .then(currencyCloud.reference.getAvailableCurrencies)
-//   .then(function (res) {
-//     console.log(
-//       "available currencies: " + JSON.stringify(res.currencies, null, 2)
-//     );
-//   })
-//   .then(currencyCloud.balances.find)
-//   .then(function (res) {
-//     console.log("balances: " + JSON.stringify(res.balances, null, 2));
-//   })
-//   .then(currencyCloud.authentication.logout)
-//   .catch(console.log);
+console.log("API_KEY: ", process.env.REACT_APP_API_KEY);
+console.log("LOGIN_ID: ", process.env.REACT_APP_LOGIN_ID);
 
 export default class FX extends Component {
   constructor(props) {
@@ -46,6 +28,8 @@ export default class FX extends Component {
       redirect: null,
       userReady: false,
       currentUser: { username: "" },
+      availableCurrencies: undefined,
+      balances: undefined,
     };
   }
 
@@ -53,14 +37,41 @@ export default class FX extends Component {
     const currentUser = AuthService.getCurrentUser();
     if (!currentUser) this.setState({ redirect: "/" });
     this.setState({ currentUser: currentUser, userReady: true });
+    this.currencyCloudData();
   }
+
+  currencyCloudData = () => {
+    currencyCloud.authentication
+      .login({
+        environment: ENV,
+        loginId: LOGIN_ID,
+        apiKey: API_KEY,
+      })
+      .then(currencyCloud.reference.getAvailableCurrencies)
+      .then(function (res) {
+        this.setState({
+          availableCurrencies: JSON.stringify(res.currencies, null, 2),
+        });
+      })
+      .then(currencyCloud.balances.find)
+      .then(function (res) {
+        this.setState({
+          balances: JSON.stringify(res.balances, null, 2),
+        });
+      })
+      .then(currencyCloud.authentication.logout)
+      .catch(console.log);
+  };
 
   render() {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;
     }
 
-    const { currentUser } = this.state;
+    const { availableCurrencies, balances } = this.state;
+
+    console.log("avaiable currencies: ", availableCurrencies);
+    console.log("balances: ", balances);
 
     return (
       <>
