@@ -1,28 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Dropdown } from "react-bootstrap";
-
-const ExportToggle = React.forwardRef(({ children, onClick }, ref) => (
-  <div
-    ref={ref}
-    onClick={(e) => {
-      e.preventDefault();
-      onClick(e);
-    }}
-  >
-    {children}
-    <div className="nav-item">
-      <Link
-        to={"#"}
-        className="nav-link  dropdown-toggle"
-        data-toggle="dropdown"
-      >
-        <i className="mdi mdi-file-export"></i>
-        <span>Export CSV</span>
-      </Link>
-    </div>
-  </div>
-));
 
 function SettingsSubmenu() {
   return (
@@ -37,7 +14,7 @@ function SettingsSubmenu() {
         <li className="nav-item">
           <Link to={"./settings-preferences"} className="nav-link">
             <i className="mdi mdi-settings"></i>
-            <span>Preferences</span>
+            <span>Notifications</span>
           </Link>
         </li>
         <li className="nav-item">
@@ -46,28 +23,12 @@ function SettingsSubmenu() {
             <span>Security</span>
           </Link>
         </li>
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <Link to={"./settings-account"} className="nav-link">
             <i className="mdi mdi-bank"></i>
             <span>Linked Account</span>
           </Link>
-        </li>
-        <li className="nav-item dropdown">
-          <Dropdown>
-            <Dropdown.Toggle as={ExportToggle} />
-            <Dropdown.Menu size="sm" title="">
-              <Link className="dropdown-item py-2" to={"./data-last-price"}>
-                Last Price
-              </Link>
-              <Link className="dropdown-item py-2" to={"./data-index-price"}>
-                Index Price
-              </Link>
-              <Link className="dropdown-item pt-2" to={"./data-mark-price"}>
-                Mark Price
-              </Link>
-            </Dropdown.Menu>
-          </Dropdown>
-        </li>
+        </li> */}
       </ul>
     </>
   );

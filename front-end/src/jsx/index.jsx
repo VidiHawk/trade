@@ -13,7 +13,7 @@ import Lock from "./pages/lock";
 import Otp1 from "./pages/otp-1";
 import Otp2 from "./pages/otp-2";
 import Reset from "./pages/reset";
-import SettingAccount from "./pages/settings-account";
+import Beneficiaries from "./pages/beneficiaries";
 import Preferences from "./pages/settings-preferences";
 import Security from "./pages/settings-security";
 import Signin from "./pages/signin";
@@ -23,7 +23,7 @@ import VerifyStep2 from "./pages/verify-step-2";
 import VerifyStep3 from "./pages/verify-step-3";
 import VerifyStep4 from "./pages/verify-step-4";
 import VerifyStep5 from "./pages/verify-step-5";
-import VerifyStep6 from "./pages/verify-step-6";
+import VerifyBeneficiary from "./pages/verify-beneficiary";
 import AccountAffiliate from "./pages/account-affiliate";
 
 class Index extends Component {
@@ -46,7 +46,7 @@ class Index extends Component {
               <Route path="/otp-1" component={Otp1} />
               <Route path="/otp-2" component={Otp2} />
               <Route path="/reset" component={Reset} />
-              <Route path="/settings-account" component={SettingAccount} />
+              <Route path="/beneficiaries" component={Beneficiaries} />
               <Route path="/settings-preferences" component={Preferences} />
               <Route path="/settings-security" component={Security} />
               <Route path="/signin" component={Signin} />
@@ -56,7 +56,7 @@ class Index extends Component {
               <Route path="/verify-step-3" component={VerifyStep3} />
               <Route path="/verify-step-4" component={VerifyStep4} />
               <Route path="/verify-step-5" component={VerifyStep5} />
-              <Route path="/verify-step-6" component={VerifyStep6} />
+              <Route path="/verify-beneficiary" component={VerifyBeneficiary} />
 
               <Route path="/account-affiliate" component={AccountAffiliate} />
               {/* <Route path="/account-api" component={AccountApi} /> */}

@@ -1,5 +1,29 @@
 # Node.js – JWT Authentication & Authorization with JSONWebToken & Sequelize
 
+## Next
+
+Id
+first name
+last name
+email
+email2
+phone
+password
+gov_id
+business name
+address 1
+address 2
+city 
+postcode
+country
+
+account 1 
+account 2
+beneficiary1
+beneficiary2
+
+
+
 ## Project setup
 ```
 npm install
@@ -52,41 +76,21 @@ sudo npm install nodemon --location=global
 - User login token set to expire after 24 hours. To extend this period, update node-js-jwt-auth/app/controllers/auth.controller.js 
 
 
-## User Registration, User Login and Authorization process.
+## Additional useful resources:
 
 For more detail, please visit:
 > [Node.js JWT Authentication & Authorization example](https://bezkoder.com/node-js-jwt-authentication-mysql/)
 
-You may need to implement Refresh Token:
-
-![jwt-refresh-token-node-js-example-flow](jwt-refresh-token-node-js-example-flow.png)
+You may need to implement Refresh Token: 
 
 > [Node.js JWT Refresh Token example](https://bezkoder.com/jwt-refresh-token-node-js/)
 
-Working with Front-end:
-> [React](https://www.bezkoder.com/react-jwt-auth/) / [React + Redux](https://www.bezkoder.com/react-redux-jwt-auth/)
-
-## More Practice:
-> [Build Node.js Rest APIs with Express, Sequelize & MySQL](https://bezkoder.com/node-js-express-sequelize-mysql/)
-
-> [Server side Pagination in Node.js with Sequelize and MySQL](https://bezkoder.com/node-js-sequelize-pagination-mysql/)
-
 > [Node.js Express File Upload Rest API example](https://bezkoder.com/node-js-express-file-upload/)
-
-> [Node.js Express File Upload with Google Cloud Storage example](https://bezkoder.com/google-cloud-storage-nodejs-upload-file/)
 
 > [Node.js JWT Authentication & Authorization example with MongoDB](https://bezkoder.com/node-js-mongodb-auth-jwt/)
 
-Associations:
-> [Sequelize Associations: One-to-Many Relationship example](https://bezkoder.com/sequelize-associate-one-to-many/)
+> [Node.js JWT Authentication & Authorization example with PostgreSQL](https://www.bezkoder.com/node-js-jwt-authentication-postgresql/)
 
-> [Sequelize Associations: Many-to-Many Relationship example](https://bezkoder.com/sequelize-associate-many-to-many/)
-
-Deployment:
-> [Deploying/Hosting Node.js app on Heroku with MySQL database](https://bezkoder.com/deploy-node-js-app-heroku-cleardb-mysql/)
-
-Integration on same Server/Port:
-> [Integrate Vue with Node.js Express](https://www.bezkoder.com/serve-vue-app-express/)
 
 > [Integrate React with Node.js Express](https://www.bezkoder.com/integrate-react-express-same-server-port/)
 

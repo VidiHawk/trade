@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 // import TimeDatePicker from "../element/datepicker";
 import PageTitle from "../element/page-title";
 import Footer2 from "../layout/footer2";
@@ -7,54 +7,79 @@ import Footer2 from "../layout/footer2";
 import Header2 from "../layout/header2";
 import SettingsSubmenu from "../layout/settings-submenu";
 import Sidebar from "../layout/sidebar";
+import { Redirect } from "react-router-dom";
+import AuthService from "../../services/auth.service";
 
-function Settings() {
-  return (
-    <>
-      <Header2 />
-      <Sidebar />
-      <PageTitle />
+export default class Settings extends Component {
+  constructor(props) {
+    super(props);
 
-      <div className="content-body">
-        <div className="container">
-          <div className="row">
-            <div className="col-xl-12">
-              <div className="card sub-menu">
-                <div className="card-body">
-                  <SettingsSubmenu />
+    this.state = {
+      redirect: null,
+      userReady: false,
+      currentUser: { username: "" },
+    };
+  }
+
+  componentDidMount() {
+    const currentUser = AuthService.getCurrentUser();
+    if (!currentUser) this.setState({ redirect: "./" });
+    this.setState({ currentUser: currentUser, userReady: true });
+  }
+
+  render() {
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />;
+    }
+
+    const { currentUser } = this.state;
+
+    return (
+      <>
+        <Header2 />
+        <Sidebar />
+        <PageTitle />
+
+        <div className="content-body">
+          <div className="container">
+            <div className="row">
+              <div className="col-xl-12">
+                <div className="card sub-menu">
+                  <div className="card-body">
+                    <SettingsSubmenu />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-xl-12">
-              <div className="row">
-                <div className="col-xl-6 col-md-6">
-                  <div className="card">
-                    <div className="card-header">
-                      <h4 className="card-title">User Profile</h4>
-                    </div>
-                    <div className="card-body">
-                      <form action="#">
-                        <div className="row">
-                          <label className="form-label">Username</label>
-                          <div className="flex-grow-1">
-                            <h5 className="mb-3">Fabian de Mortier</h5>
-                          </div>
-                          <label className="form-label">Email address</label>
-                          <div className="flex-grow-1">
-                            <h5 className="mb-3">fabian@vidiren.com</h5>
-                          </div>
-                          <div className="mb-2 col-xl-12">
-                            <label className="form-label">
-                              Update your name:
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="first name last name"
-                            />
-                          </div>
-                          <div className="mb-1 col-xl-12">
-                            {/* <div className="d-flex align-items-center mb-3">
+              <div className="col-xl-12">
+                <div className="row">
+                  <div className="col-xl-6 col-md-6">
+                    <div className="card">
+                      <div className="card-header">
+                        <h4 className="card-title">User Profile</h4>
+                      </div>
+                      <div className="card-body">
+                        <form action="#">
+                          <div className="row">
+                            <label className="form-label">Username</label>
+                            <div className="flex-grow-1">
+                              <h5 className="mb-3">Fabian de Mortier</h5>
+                            </div>
+                            <label className="form-label">Email address</label>
+                            <div className="flex-grow-1">
+                              <h5 className="mb-3">fabian@vidiren.com</h5>
+                            </div>
+                            <div className="mb-2 col-xl-12">
+                              <label className="form-label">
+                                Update your name:
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="first name last name"
+                              />
+                            </div>
+                            <div className="mb-1 col-xl-12">
+                              {/* <div className="d-flex align-items-center mb-3">
                               <img
                                 className="me-3 rounded-circle me-0 me-sm-3"
                                 src={require("../../images/profile/2.png")}
@@ -63,146 +88,148 @@ function Settings() {
                                 alt=""
                               />
                             </div> */}
-                            {/* <div className="file-upload-wrapper" data-text="Change Photo">
+                              {/* <div className="file-upload-wrapper" data-text="Change Photo">
                                                         <input name="file-upload-field" type="file"
                                                             className="file-upload-field"/>
                                                     </div> */}
+                            </div>
+                            <div className="col-12">
+                              <button className="btn btn-success waves-effect px-4">
+                                Save
+                              </button>
+                            </div>
                           </div>
-                          <div className="col-12">
-                            <button className="btn btn-success waves-effect px-4">
-                              Save
-                            </button>
-                          </div>
-                        </div>
-                      </form>
+                        </form>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="col-xl-6 col-md-6">
-                  <div className="card">
-                    <div className="card-header">
-                      <h4 className="card-title">Update email</h4>
-                    </div>
-                    <div className="card-body">
-                      <form action="#">
-                        <div className="row">
-                          <div className="mb-3 col-xl-12">
-                            <label className="form-label">New email</label>
-                            <input
-                              type="email"
-                              className="form-control"
-                              placeholder="Email"
-                            />
+                  <div className="col-xl-6 col-md-6">
+                    <div className="card">
+                      <div className="card-header">
+                        <h4 className="card-title">Update email</h4>
+                      </div>
+                      <div className="card-body">
+                        <form action="#">
+                          <div className="row">
+                            <div className="mb-3 col-xl-12">
+                              <label className="form-label">New email</label>
+                              <input
+                                type="email"
+                                className="form-control"
+                                placeholder="Email"
+                              />
+                            </div>
+                            <div className="mb-3 col-xl-12">
+                              <label className="form-label">New password</label>
+                              <input
+                                type="password"
+                                className="form-control"
+                                placeholder="**********"
+                              />
+                              <p className="mt-2 mb-0">
+                                You can enable two factor authencation on the
+                                security page
+                              </p>
+                            </div>
+                            <div className="col-12">
+                              <button className="btn btn-success waves-effect px-4">
+                                Save
+                              </button>
+                            </div>
                           </div>
-                          <div className="mb-3 col-xl-12">
-                            <label className="form-label">New password</label>
-                            <input
-                              type="password"
-                              className="form-control"
-                              placeholder="**********"
-                            />
-                            <p className="mt-2 mb-0">
-                              You can enable two factor authencation on the
-                              security page
-                            </p>
-                          </div>
-                          <div className="col-12">
-                            <button className="btn btn-success waves-effect px-4">
-                              Save
-                            </button>
-                          </div>
-                        </div>
-                      </form>
+                        </form>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="col-xl-12">
-                  <div className="card">
-                    <div className="card-header">
-                      <h4 className="card-title">Company Information</h4>
-                    </div>
-                    <div className="card-body">
-                      <form
-                        method="post"
-                        name="myform"
-                        className="personal_validate"
-                      >
-                        <div className="row">
-                          <div className="mb-3 col-xl-6 col-md-6">
-                            <label className="form-label">Business Name</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Acme Import Gmbh"
-                              name="fullname"
-                            />
-                          </div>
-                          <div className="mb-3 col-xl-6 col-md-6">
-                            <label className="form-label">Email</label>
-                            <input
-                              type="email"
-                              className="form-control"
-                              placeholder="Hello@example.com"
-                              name="email"
-                            />
-                          </div>
-                          <div className="mb-3 col-xl-6 col-md-6">
-                            <label className="form-label">Address 1</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Brauhaus 7th floor,"
-                              name="address1"
-                            />
-                            {/* <div>
+                  <div className="col-xl-12">
+                    <div className="card">
+                      <div className="card-header">
+                        <h4 className="card-title">Company Information</h4>
+                      </div>
+                      <div className="card-body">
+                        <form
+                          method="post"
+                          name="myform"
+                          className="personal_validate"
+                        >
+                          <div className="row">
+                            <div className="mb-3 col-xl-6 col-md-6">
+                              <label className="form-label">
+                                Business Name
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Acme Import Gmbh"
+                                name="fullname"
+                              />
+                            </div>
+                            <div className="mb-3 col-xl-6 col-md-6">
+                              <label className="form-label">Email</label>
+                              <input
+                                type="email"
+                                className="form-control"
+                                placeholder="Hello@example.com"
+                                name="email"
+                              />
+                            </div>
+                            <div className="mb-3 col-xl-6 col-md-6">
+                              <label className="form-label">Address 1</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Brauhaus 7th floor,"
+                                name="address1"
+                              />
+                              {/* <div>
                               <TimeDatePicker />
                             </div> */}
-                          </div>
-                          <div className="mb-3 col-xl-6 col-md-6">
-                            <label className="form-label">Phone</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="+49 46 35 34 55"
-                              name="phone"
-                            />
-                          </div>
-                          <div className="mb-3 col-xl-6 col-md-6">
-                            <label className="form-label">Address 2</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Mohrenstrasse 37"
-                              name="address2"
-                            />
-                          </div>
-                          <div className="mb-3 col-xl-6 col-md-6">
-                            <label className="form-label">City</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Berlin"
-                              name="city"
-                            />
-                          </div>
-                          <div className="mb-3 col-xl-6 col-md-6">
-                            <label className="form-label">Post Code</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="25481"
-                              name="postal"
-                            />
-                          </div>
-                          <div className="mb-3 col-xl-6 col-md-6">
-                            <label className="form-label">Country</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Germany"
-                              name="country"
-                            />
-                            {/* <select className="form-control" name="country">
+                            </div>
+                            <div className="mb-3 col-xl-6 col-md-6">
+                              <label className="form-label">Phone</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="+49 46 35 34 55"
+                                name="phone"
+                              />
+                            </div>
+                            <div className="mb-3 col-xl-6 col-md-6">
+                              <label className="form-label">Address 2</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Mohrenstrasse 37"
+                                name="address2"
+                              />
+                            </div>
+                            <div className="mb-3 col-xl-6 col-md-6">
+                              <label className="form-label">City</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Berlin"
+                                name="city"
+                              />
+                            </div>
+                            <div className="mb-3 col-xl-6 col-md-6">
+                              <label className="form-label">Post Code</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="25481"
+                                name="postal"
+                              />
+                            </div>
+                            <div className="mb-3 col-xl-6 col-md-6">
+                              <label className="form-label">Country</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Germany"
+                                name="country"
+                              />
+                              {/* <select className="form-control" name="country">
                               <option value="">Select</option>
                               <option value="Afghanistan">Afghanistan</option>
                               <option value="Åland Islands">
@@ -571,15 +598,16 @@ function Settings() {
                               <option value="Zambia">Zambia</option>
                               <option value="Zimbabwe">Zimbabwe</option>
                             </select> */}
-                          </div>
+                            </div>
 
-                          {/* <div className="mb-3 col-12">
+                            {/* <div className="mb-3 col-12">
                             <button className="btn btn-success px-4">
                               Save
                             </button>
                           </div> */}
-                        </div>
-                      </form>
+                          </div>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -587,11 +615,8 @@ function Settings() {
             </div>
           </div>
         </div>
-      </div>
-
-      <Footer2 />
-    </>
-  );
+        <Footer2 />
+      </>
+    );
+  }
 }
-
-export default Settings;

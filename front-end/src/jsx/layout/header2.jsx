@@ -61,12 +61,13 @@ export default class Header2 extends Component {
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
 
-    if (!currentUser) this.setState({ redirect: "/" });
-    this.setState({
-      currentUser: currentUser,
-      userReady: true,
-      showAdminBoard: currentUser.roles.includes("ROLE_ADMIN"),
-    });
+    if (!currentUser) this.setState({ redirect: "./" });
+    else
+      this.setState({
+        currentUser: currentUser,
+        userReady: true,
+        showAdminBoard: currentUser.roles.includes("ROLE_ADMIN"),
+      });
 
     EventBus.on("logout", () => {
       this.logOut();
