@@ -150,12 +150,6 @@ class Homepage extends React.Component {
     // console.log(this.inputNode.value);
   };
 
-  // formatNumber = (number, decimals) => {
-  //   const fixedNumber = Number(number.toFixed(decimals));
-  //   const formatedNumber = fixedNumber.toLocaleString("en-US");
-  //   return formatedNumber;
-  // };
-
   formatCurrency = (number, currencyCode) => {
     const fixedNumber = Number(number.toFixed());
     const formatedCurrency = fixedNumber.toLocaleString("en-US", {

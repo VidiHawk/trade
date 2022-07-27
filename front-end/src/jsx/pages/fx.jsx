@@ -17,8 +17,8 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 const LOGIN_ID = process.env.REACT_APP_LOGIN_ID;
 const ENV = process.env.REACT_APP_ENV;
 
-console.log("API_KEY: ", process.env.REACT_APP_API_KEY);
-console.log("LOGIN_ID: ", process.env.REACT_APP_LOGIN_ID);
+// console.log("API_KEY: ", process.env.REACT_APP_API_KEY);
+// console.log("LOGIN_ID: ", process.env.REACT_APP_LOGIN_ID);
 
 export default class FX extends Component {
   constructor(props) {
@@ -28,8 +28,10 @@ export default class FX extends Component {
       redirect: null,
       userReady: false,
       currentUser: { username: "" },
-      availableCurrencies: undefined,
-      balances: undefined,
+      availableCurrencies: [],
+      activeAccounts: [],
+      activeBalances: [""],
+      selectedSellCurrency: null,
     };
   }
 
@@ -48,19 +50,32 @@ export default class FX extends Component {
         apiKey: API_KEY,
       })
       .then(currencyCloud.reference.getAvailableCurrencies)
-      .then(function (res) {
+      .then((res) => {
         this.setState({
-          availableCurrencies: JSON.stringify(res.currencies, null, 2),
+          availableCurrencies: res.currencies,
         });
       })
       .then(currencyCloud.balances.find)
-      .then(function (res) {
-        this.setState({
-          balances: JSON.stringify(res.balances, null, 2),
-        });
+      .then((res) => {
+        const lengthBalances = res.balances.length;
+        const activeBalances = [];
+        if (res.balances.length > 0) {
+          for (const item in res.balances) {
+            const account = res.balances[item];
+            activeBalances.push({ [account.currency]: account.amount });
+          }
+          this.setState({
+            activeAccounts: res.balances,
+            activeBalances: activeBalances,
+          });
+        }
       })
       .then(currencyCloud.authentication.logout)
       .catch(console.log);
+  };
+
+  handleChange = (e) => {
+    this.setState({ selectedSellCurrency: e.target.value });
   };
 
   render() {
@@ -68,10 +83,21 @@ export default class FX extends Component {
       return <Redirect to={this.state.redirect} />;
     }
 
-    const { availableCurrencies, balances } = this.state;
+    const {
+      activeAccounts,
+      activeBalances,
+      availableCurrencies,
+      selectedSellCurrency,
+    } = this.state;
 
-    console.log("avaiable currencies: ", availableCurrencies);
-    console.log("balances: ", balances);
+    console.log("selected sell currency: ", selectedSellCurrency);
+    // console.log("activeBalances: ", activeBalances);
+    const initCurrencySell = Object.keys(activeBalances[0]);
+    const selectedAccountCurrency = selectedSellCurrency
+      ? selectedSellCurrency
+      : initCurrencySell;
+
+    console.log(initCurrencySell);
 
     return (
       <>
@@ -93,8 +119,13 @@ export default class FX extends Component {
                   <div className="card-body">
                     <div className="row  justify-content-between">
                       <div className="col col-sm-auto col-6">
-                        <p className="mb-2">EUR Account Balance</p>
-                        <h6>314,107.51 EUR</h6>
+                        <p className="mb-2">
+                          {selectedAccountCurrency} Account Balance
+                        </p>
+                        <h6>
+                          {activeBalances[0][initCurrencySell]}{" "}
+                          {selectedAccountCurrency}
+                        </h6>
                       </div>
                       {/* <div className="col col-sm-auto col-6">
                       <p className="mb-2">Index Price</p>
@@ -130,8 +161,97 @@ export default class FX extends Component {
                         <Nav.Link eventKey="#">Options</Nav.Link>
                       </Nav>
                     </div>
-                    <div className="card-body market-limit">
+                    <div className="card-body market-order">
                       <Tab.Content>
+                        <Tab.Pane eventKey="market">
+                          <form
+                            method="post"
+                            name="myform"
+                            className="currency_market"
+                          >
+                            <div className="mb-3">
+                              <label className="form-label">
+                                Sell Currency
+                              </label>
+                              <div className="input-group mb-3">
+                                <select
+                                  name="currency"
+                                  className="form-control mw-150"
+                                  defaultValue={initCurrencySell}
+                                  value={this.state.selectedSellCurrency}
+                                  onChange={this.handleChange}
+                                >
+                                  {activeAccounts.map(({ currency }, index) => (
+                                    <option key={currency}>{currency}</option>
+                                  ))}
+                                </select>
+                                <input
+                                  type="text"
+                                  name="amount"
+                                  className="form-control text-end"
+                                  placeholder="Enter Amount"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="mb-3">
+                              <label className="form-label">Buy Currency</label>
+                              <div className="input-group mb-3">
+                                <select
+                                  name="currency"
+                                  className="form-control mw-150"
+                                >
+                                  {availableCurrencies.map(
+                                    ({ code }, index) => (
+                                      <option key={code}>{code}</option>
+                                    )
+                                  )}
+                                </select>
+                                {/* <input
+                                type="text"
+                                name="amount"
+                                className="form-control text-end"
+                                placeholder="Enter Amount"
+                              /> */}
+                              </div>
+                            </div>
+
+                            <div className="mb-3">
+                              <label className="form-label">
+                                Conversion Date
+                              </label>
+                              <div className="input-group mw-150">
+                                <div>
+                                  <TimeDatePicker />
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* <div className="mb-3">
+                            <div className="form-label border-0 px-0 py-1 d-flex justify-content-between align-items-center">
+                              Order Date
+                              <select
+                                name="currency"
+                                className="form-control text-end "
+                              >
+                                <div>
+                                  <TimeDatePicker />
+                                </div>
+                              </select>
+                            </div>
+                          </div> */}
+
+                            <div className="btn mt-3">
+                              <button
+                                type="submit"
+                                name="submit"
+                                className="btn btn-success"
+                              >
+                                Get Quote
+                              </button>
+                            </div>
+                          </form>
+                        </Tab.Pane>
                         <Tab.Pane eventKey="limit">
                           <form
                             method="post"
@@ -147,13 +267,9 @@ export default class FX extends Component {
                                   name="currency"
                                   className="form-control mw-150"
                                 >
-                                  <option data-display="Euro" value="euro">
-                                    EUR
-                                  </option>
-                                  <option value="usd">USD</option>
-                                  <option value="gbp">GBP</option>
-                                  <option value="cad">CAD</option>
-                                  <option value="jpy">JPY</option>
+                                  {activeAccounts.map(({ currency }, index) => (
+                                    <option key={currency}>{currency}</option>
+                                  ))}
                                 </select>
                                 <input
                                   type="text"
@@ -173,13 +289,11 @@ export default class FX extends Component {
                                   name="currency"
                                   className="form-control mw-150"
                                 >
-                                  <option data-display="Usd" value="usd">
-                                    USD
-                                  </option>
-                                  <option value="eur">EUR</option>
-                                  <option value="gbp">GBP</option>
-                                  <option value="cad">CAD</option>
-                                  <option value="jpy">JPY</option>
+                                  {availableCurrencies.map(
+                                    ({ code }, index) => (
+                                      <option key={code}>{code}</option>
+                                    )
+                                  )}
                                 </select>
                                 <input
                                   type="text"
@@ -217,96 +331,6 @@ export default class FX extends Component {
                                 className="btn btn-success"
                               >
                                 Place Order
-                              </button>
-                            </div>
-                          </form>
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="market">
-                          <form
-                            method="post"
-                            name="myform"
-                            className="currency_market"
-                          >
-                            <div className="mb-3">
-                              <label className="form-label">
-                                Sell Currency
-                              </label>
-                              <div className="input-group mb-3">
-                                <select
-                                  name="currency"
-                                  className="form-control mw-150"
-                                >
-                                  <option data-display="Euro" value="euro">
-                                    EUR
-                                  </option>
-                                  <option value="usd">USD</option>
-                                  <option value="gbp">GBP</option>
-                                  <option value="cad">CAD</option>
-                                  <option value="jpy">JPY</option>
-                                </select>
-                                <input
-                                  type="text"
-                                  name="amount"
-                                  className="form-control text-end"
-                                  placeholder="Enter Amount"
-                                />
-                              </div>
-                            </div>
-
-                            <div className="mb-3">
-                              <label className="form-label">Buy Currency</label>
-                              <div className="input-group mb-3">
-                                <select
-                                  name="currency"
-                                  className="form-control mw-150"
-                                >
-                                  <option data-display="Usd" value="usd">
-                                    USD
-                                  </option>
-                                  <option value="eur">EUR</option>
-                                  <option value="gbp">GBP</option>
-                                  <option value="cad">CAD</option>
-                                  <option value="jpy">JPY</option>
-                                </select>
-                                {/* <input
-                                type="text"
-                                name="amount"
-                                className="form-control text-end"
-                                placeholder="Enter Amount"
-                              /> */}
-                              </div>
-                            </div>
-
-                            <div className="mb-3">
-                              <label className="form-label">Order Date</label>
-                              <div className="input-group mw-150">
-                                <div>
-                                  <TimeDatePicker />
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* <div className="mb-3">
-                            <div className="form-label border-0 px-0 py-1 d-flex justify-content-between align-items-center">
-                              Order Date
-                              <select
-                                name="currency"
-                                className="form-control text-end "
-                              >
-                                <div>
-                                  <TimeDatePicker />
-                                </div>
-                              </select>
-                            </div>
-                          </div> */}
-
-                            <div className="btn mt-3">
-                              <button
-                                type="submit"
-                                name="submit"
-                                className="btn btn-success"
-                              >
-                                Get Quote
                               </button>
                             </div>
                           </form>
