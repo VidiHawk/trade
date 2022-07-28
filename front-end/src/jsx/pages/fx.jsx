@@ -30,8 +30,10 @@ export default class FX extends Component {
       currentUser: { username: "" },
       availableCurrencies: [],
       activeAccounts: [],
-      activeBalances: [""],
-      selectedSellCurrency: "",
+      activeBalances: [" "],
+      selectedSellCurrency: "EUR",
+      selectedBuyCurrency: "USD",
+      buyOrSell: "BUY",
     };
   }
 
@@ -74,8 +76,26 @@ export default class FX extends Component {
       .catch(console.log);
   };
 
-  handleChange = (e) => {
+  handleChangeSell = (e) => {
     this.setState({ selectedSellCurrency: e.target.value });
+  };
+
+  handleChangeBuy = (e) => {
+    this.setState({ selectedBuyCurrency: e.target.value });
+  };
+
+  handleChangeBuyOrSell = (e) => {
+    this.setState({ buyOrSell: e.target.value });
+  };
+
+  handleAmount = (e) => {
+    return;
+  };
+
+  handleSubmitQuoteMarket = (e) => {
+    // {{baseUrl}}/rates/detailed?buy_currency=EUR&sell_currency=USD&fixed_side=buy&amount=1000
+
+    return;
   };
 
   render() {
@@ -88,6 +108,8 @@ export default class FX extends Component {
       activeBalances,
       availableCurrencies,
       selectedSellCurrency,
+      selectedBuyCurrency,
+      buyOrSell,
     } = this.state;
 
     // console.log("selected sell currency: ", selectedSellCurrency);
@@ -97,8 +119,13 @@ export default class FX extends Component {
     const selectedAccountCurrency = selectedSellCurrency
       ? selectedSellCurrency
       : initCurrencySell;
+    const chartCurrencyPair =
+      buyOrSell === "BUY"
+        ? selectedBuyCurrency + selectedSellCurrency
+        : selectedSellCurrency + selectedBuyCurrency;
 
-    // console.log("init: ", initCurrencySell);
+    console.log("pair ", chartCurrencyPair);
+    console.log("buy or sell ", buyOrSell);
 
     return (
       <>
@@ -136,14 +163,7 @@ export default class FX extends Component {
                       <p className="mb-2">Mark Price</p>
                       <h6>10,343.94 USD</h6>
                     </div>
-                    <div className="col col-sm-auto col-6">
-                      <p className="mb-2">Last Price</p>
-                      <h6>10,383.51 USD</h6>
-                    </div>
-                    <div className="col col-sm-auto col-6">
-                      <p className="mb-2">Funding Rate</p>
-                      <h6>0.1392%</h6>
-                    </div> */}
+                     */}
                     </div>
                   </div>
                 </div>
@@ -151,15 +171,16 @@ export default class FX extends Component {
             </div>
 
             <div className="row">
-              <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6">
+              <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6">
                 <Tab.Container defaultActiveKey="market">
                   <div className="card">
                     <div className="card-header">
                       <Nav variant="pills">
                         <Nav.Link eventKey="market">Market Order</Nav.Link>
                         <Nav.Link eventKey="limit">Limit Order</Nav.Link>
-                        <Nav.Link eventKey="#">Futures</Nav.Link>
-                        <Nav.Link eventKey="#">Options</Nav.Link>
+                        <Nav.Link eventKey="forward">
+                          Forward Contracts
+                        </Nav.Link>
                       </Nav>
                     </div>
                     <div className="card-body market-order">
@@ -171,53 +192,72 @@ export default class FX extends Component {
                             className="currency_market"
                           >
                             <div className="mb-3">
-                              <label className="form-label">
-                                Sell Currency
-                              </label>
-                              <div className="input-group mb-3">
+                              <div className="d-flex justify-content-between form-label">
+                                <div>
+                                  <label className="form-label">Sell</label>
+                                  <div className="input-group">
+                                    <select
+                                      name="currency"
+                                      className="form-control miw-90 mw-150"
+                                      value={this.state.selectedSellCurrency}
+                                      onChange={this.handleChangeSell}
+                                    >
+                                      {activeAccounts.map(
+                                        ({ currency }, index) => (
+                                          <option key={currency}>
+                                            {currency}
+                                          </option>
+                                        )
+                                      )}
+                                    </select>
+                                  </div>
+                                </div>
+                                <div>
+                                  <label className="form-label">Buy</label>
+                                  <div className="input-group">
+                                    <select
+                                      name="currency"
+                                      className="form-control miw-90"
+                                      value={this.state.selectedBuyCurrency}
+                                      onChange={this.handleChangeBuy}
+                                    >
+                                      {availableCurrencies.map(
+                                        ({ code }, index) => (
+                                          <option key={code}>{code}</option>
+                                        )
+                                      )}
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="mb-4">
+                              <label className="form-label">Amount to</label>
+                              <div className="input-group">
                                 <select
                                   name="currency"
-                                  className="form-control mw-150"
-                                  // defaultValue="SELECT"
-                                  value={this.state.selectedSellCurrency}
-                                  onChange={this.handleChange}
+                                  className="form-control miw-90 me-2"
+                                  value={this.state.buyOrSell}
+                                  onChange={this.handleChangeBuyOrSell}
                                 >
-                                  {activeAccounts.map(({ currency }, index) => (
-                                    <option key={currency}>{currency}</option>
-                                  ))}
+                                  <option>BUY</option>
+                                  <option>SELL</option>
                                 </select>
                                 <input
-                                  type="text"
+                                  type="number"
+                                  min="10"
+                                  step="any"
                                   name="amount"
-                                  className="form-control text-end"
+                                  className="form-control input text-end ms-2"
                                   placeholder="Enter Amount"
+                                  // value={this.state.}
+                                  onChange={this.handleAmount}
                                 />
                               </div>
                             </div>
 
-                            <div className="mb-3">
-                              <label className="form-label">Buy Currency</label>
-                              <div className="input-group mb-3">
-                                <select
-                                  name="currency"
-                                  className="form-control mw-150"
-                                >
-                                  {availableCurrencies.map(
-                                    ({ code }, index) => (
-                                      <option key={code}>{code}</option>
-                                    )
-                                  )}
-                                </select>
-                                {/* <input
-                                type="text"
-                                name="amount"
-                                className="form-control text-end"
-                                placeholder="Enter Amount"
-                              /> */}
-                              </div>
-                            </div>
-
-                            <div className="mb-3">
+                            {/* <div className="mb-3">
                               <label className="form-label">
                                 Conversion Date
                               </label>
@@ -226,26 +266,16 @@ export default class FX extends Component {
                                   <TimeDatePicker />
                                 </div>
                               </div>
+                            </div> */}
+                            <div className="text-body">
+                              By clicking on "Get a Quote" you agree with our
+                              Terms of use
                             </div>
-
-                            {/* <div className="mb-3">
-                            <div className="form-label border-0 px-0 py-1 d-flex justify-content-between align-items-center">
-                              Order Date
-                              <select
-                                name="currency"
-                                className="form-control text-end "
-                              >
-                                <div>
-                                  <TimeDatePicker />
-                                </div>
-                              </select>
-                            </div>
-                          </div> */}
-
                             <div className="btn mt-3">
                               <button
                                 type="submit"
-                                name="submit"
+                                name="quote"
+                                onSubmit={this.handleSubmitQuoteMarket}
                                 className="btn btn-success"
                               >
                                 Get Quote
@@ -336,20 +366,118 @@ export default class FX extends Component {
                             </div>
                           </form>
                         </Tab.Pane>
+                        <Tab.Pane eventKey="forward">
+                          <form
+                            method="post"
+                            name="myform"
+                            className="currency_market"
+                          >
+                            <div className="mb-3">
+                              <div className="d-flex justify-content-between form-label">
+                                <div>
+                                  <label className="form-label">Sell</label>
+                                  <div className="input-group">
+                                    <select
+                                      name="currency"
+                                      className="form-control miw-90 mw-150"
+                                      value={this.state.selectedSellCurrency}
+                                      onChange={this.handleChangeSell}
+                                    >
+                                      {activeAccounts.map(
+                                        ({ currency }, index) => (
+                                          <option key={currency}>
+                                            {currency}
+                                          </option>
+                                        )
+                                      )}
+                                    </select>
+                                  </div>
+                                </div>
+                                <div>
+                                  <label className="form-label">Buy</label>
+                                  <div className="input-group">
+                                    <select
+                                      name="currency"
+                                      className="form-control miw-90"
+                                      value={this.state.selectedBuyCurrency}
+                                      onChange={this.handleChangeBuy}
+                                    >
+                                      {availableCurrencies.map(
+                                        ({ code }, index) => (
+                                          <option key={code}>{code}</option>
+                                        )
+                                      )}
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="mb-4">
+                              <label className="form-label">Amount to</label>
+                              <div className="input-group">
+                                <select
+                                  name="currency"
+                                  className="form-control miw-90 me-2"
+                                  value={this.state.buyOrSell}
+                                  onChange={this.handleChangeBuyOrSell}
+                                >
+                                  <option>BUY</option>
+                                  <option>SELL</option>
+                                </select>
+                                <input
+                                  type="number"
+                                  min="10"
+                                  step="any"
+                                  name="amount"
+                                  className="form-control input text-end ms-2"
+                                  placeholder="Enter Amount"
+                                  // value={this.state.}
+                                  onChange={this.handleAmount}
+                                />
+                              </div>
+                            </div>
+
+                            <div className="mb-3">
+                              <label className="form-label">
+                                Conversion Date
+                              </label>
+                              <div className="input-group mw-150">
+                                <div>
+                                  <TimeDatePicker />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-body">
+                              By clicking on "Get a Quote" you agree with our
+                              Terms of use
+                            </div>
+                            <div className="btn mt-3">
+                              <button
+                                type="submit"
+                                name="quote"
+                                onSubmit={this.handleSubmitQuoteMarket}
+                                className="btn btn-success"
+                              >
+                                Get Quote
+                              </button>
+                            </div>
+                          </form>
+                        </Tab.Pane>
                       </Tab.Content>
                     </div>
                   </div>
                 </Tab.Container>
               </div>
 
-              <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-6">
+              <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6">
                 {/* <!-- TradingView Widget BEGIN --> */}
                 <div
                   className="tradingview-widget-container card"
                   style={{ height: "460px" }}
                 >
                   <TradingViewWidget
-                    symbol="EURUSD"
+                    symbol={chartCurrencyPair}
                     theme={Themes.DARK}
                     locale="en"
                     autosize

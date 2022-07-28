@@ -2803,6 +2803,10 @@ textarea.form-control-lg {
   z-index: 3;
 }
 
+.btn-nom {
+margin-left: 0px !important;
+}
+
 .input-group-text {
   display: flex;
   align-items: center;
@@ -11798,6 +11802,11 @@ strong,
   }
 }
 
+.miw-90 {
+  width: 90px !important;
+  max-width: 90px !important;
+}
+
 .mw-100 {
   max-width: 100px;
 }
@@ -12212,6 +12221,19 @@ input[type='range']::-moz-range-thumb:active {
   transition: all 0.3s ease-in-out;
   background: #000;
 }
+
+/* Chrome, Safari, Edge, Opera */
+.form-control::-webkit-outer-spin-button,
+.form-control::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.form-control[type=number] {
+  -moz-appearance: textfield;
+}
+
 
 .form-control .select {
   padding: 12px 0;
