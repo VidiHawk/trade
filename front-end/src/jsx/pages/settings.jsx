@@ -32,7 +32,7 @@ export default class Settings extends Component {
       return <Redirect to={this.state.redirect} />;
     }
 
-    const { currentUser } = this.state;
+    // const { currentUser } = this.state;
 
     return (
       <>

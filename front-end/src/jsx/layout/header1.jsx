@@ -46,7 +46,7 @@ class Header1 extends Component {
 
   render() {
     const { currentUser } = this.state;
-    console.log("currentUser: ", currentUser);
+
     return (
       <>
         <div className="header">

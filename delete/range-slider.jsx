@@ -1,32 +1,32 @@
-import React, { Component } from 'react'
-import Slider from 'react-rangeslider'
+import React, { Component } from "react";
+import Slider from "react-rangeslider";
 
 class RangeSlider extends Component {
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
-      value: 10
-    }
+      value: 10,
+    };
   }
 
   handleChangeStart = () => {
-    console.log('Change event started')
+    console.log("Change event started");
   };
 
-  handleChange = value => {
+  handleChange = (value) => {
     this.setState({
-      value: value
-    })
+      value: value,
+    });
   };
 
   handleChangeComplete = () => {
-    console.log('Change event completed')
+    console.log("Change event completed");
   };
 
   render() {
-    const { value } = this.state
+    const { value } = this.state;
     return (
-      <div className='slider'>
+      <div className="slider">
         <Slider
           min={0}
           max={100}
@@ -37,8 +37,8 @@ class RangeSlider extends Component {
         />
         {/* <div className='value'>{value}</div> */}
       </div>
-    )
+    );
   }
 }
 
-export default RangeSlider
+export default RangeSlider;

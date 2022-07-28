@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Nav, Tab } from "react-bootstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
-import "react-rangeslider/lib/index.css";
 import TradingViewWidget, { Themes } from "react-tradingview-widget";
 import Footer2 from "../layout/footer2";
 import Header2 from "../layout/header2";
@@ -12,6 +11,7 @@ import TimeDatePicker from "../element/datepicker";
 import { Redirect } from "react-router-dom";
 import AuthService from "../../services/auth.service";
 import * as currencyCloud from "currency-cloud";
+import "react-rangeslider/lib/index.css";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const LOGIN_ID = process.env.REACT_APP_LOGIN_ID;
@@ -57,7 +57,7 @@ export default class FX extends Component {
       })
       .then(currencyCloud.balances.find)
       .then((res) => {
-        const lengthBalances = res.balances.length;
+        // const lengthBalances = res.balances.length;
         const activeBalances = [];
         if (res.balances.length > 0) {
           for (const item in res.balances) {

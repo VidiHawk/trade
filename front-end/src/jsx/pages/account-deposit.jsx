@@ -31,7 +31,7 @@ export default class AccountDeposit extends Component {
       return <Redirect to={this.state.redirect} />;
     }
 
-    const { currentUser } = this.state;
+    // const { currentUser } = this.state;
 
     const eurSepa =
       " Account Holder Name: Vidiren SA \n IBAN: GB01TCCL71967452309172 \n BIC: TCCLGB31 \n Currency: EUR \n Bank Name: The Currency Cloud Limited \n Bank Address: 12 Steward Street, The Steward Building, London, E1 6FQ, GB";
