@@ -1,5 +1,6 @@
 # VIDI FX
 
+
 ## Project setup
 
 In the project directory, you can run:
@@ -71,8 +72,6 @@ Fullstack CRUD with Node.js Express:
 
 #### ENOSPC: System limit for number of file watchers reached, watch '/home/fox/Code/trade-authentication/front-end/src/reducers/message.js'
 
-
-
 Linux uses the inotify package to observe filesystem events, individual files or directories.
 
 Since React / Angular hot-reloads and recompiles files on save it needs to keep track of all project's files. Increasing the inotify watch limit should hide the warning messages.
@@ -88,3 +87,18 @@ cat /proc/sys/fs/inotify/max_user_watches
 // config variable name (not runnable)
 fs.inotify.max_user_watches=524288
 
+#### removed Rangeslider from package.json
+- "react-rangeslider": "^2.2.0",
+- "react-slick": "^0.26.1", //only used in testimonials.jsx
+- "slick-carousel": "^1.8.1", //only used in testimonials.jsx
+- "@testing-library/jest-dom": "^4.2.4",
+- "@testing-library/react": "^9.5.0",
+- "@testing-library/user-event": "^7.2.1",
+- "node-sass": "^4.14.1",  //replaced by more recent version
+-   "devDependencies": {
+    "typescript": "^4.7.4"
+  }
+
+
+ removal of import react-rangeslider in fx.jsx is causing this error:
+    unreachable code after return statement
