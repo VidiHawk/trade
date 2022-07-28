@@ -11,7 +11,7 @@ import TimeDatePicker from "../element/datepicker";
 import { Redirect } from "react-router-dom";
 import AuthService from "../../services/auth.service";
 import * as currencyCloud from "currency-cloud";
-import "react-rangeslider/lib/index.css";
+// import "react-rangeslider/lib/index.css";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const LOGIN_ID = process.env.REACT_APP_LOGIN_ID;
@@ -31,13 +31,13 @@ export default class FX extends Component {
       availableCurrencies: [],
       activeAccounts: [],
       activeBalances: [""],
-      selectedSellCurrency: null,
+      selectedSellCurrency: "",
     };
   }
 
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
-    if (!currentUser) this.setState({ redirect: "/" });
+    if (!currentUser) this.setState({ redirect: "./" });
     this.setState({ currentUser: currentUser, userReady: true });
     this.currencyCloudData();
   }
@@ -90,14 +90,15 @@ export default class FX extends Component {
       selectedSellCurrency,
     } = this.state;
 
-    console.log("selected sell currency: ", selectedSellCurrency);
+    // console.log("selected sell currency: ", selectedSellCurrency);
     // console.log("activeBalances: ", activeBalances);
+
     const initCurrencySell = Object.keys(activeBalances[0]);
     const selectedAccountCurrency = selectedSellCurrency
       ? selectedSellCurrency
       : initCurrencySell;
 
-    console.log(initCurrencySell);
+    // console.log("init: ", initCurrencySell);
 
     return (
       <>
@@ -177,7 +178,7 @@ export default class FX extends Component {
                                 <select
                                   name="currency"
                                   className="form-control mw-150"
-                                  defaultValue={initCurrencySell}
+                                  // defaultValue="SELECT"
                                   value={this.state.selectedSellCurrency}
                                   onChange={this.handleChange}
                                 >
