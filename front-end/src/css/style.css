@@ -2803,9 +2803,6 @@ textarea.form-control-lg {
   z-index: 3;
 }
 
-.btn-nom {
-margin-left: 0px !important;
-}
 
 .input-group-text {
   display: flex;
@@ -3249,7 +3246,7 @@ fieldset:disabled .btn {
 .btn-success:active:focus,
 .btn-success.active:focus,
 .show>.btn-success.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0rem rgba(14, 184, 100, 0.5);
+  box-shadow: 0 0 0 0rem rgba(12, 158, 85, 0.5);
 }
 
 .btn-success:disabled,

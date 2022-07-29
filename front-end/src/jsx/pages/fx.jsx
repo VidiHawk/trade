@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Nav, Tab } from "react-bootstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
-import TradingViewWidget, { Themes } from "react-tradingview-widget";
+// import TradingViewWidget, { Themes } from "react-tradingview-widget";
 import Footer2 from "../layout/footer2";
 import Header2 from "../layout/header2";
 import Sidebar from "../layout/sidebar";
@@ -11,20 +11,17 @@ import TimeDatePicker from "../element/datepicker";
 import { Redirect } from "react-router-dom";
 import AuthService from "../../services/auth.service";
 import * as currencyCloud from "currency-cloud";
+import { login, logout } from "../../config/currency-cloud";
+import CountDown from "../element/countdown";
 // import "react-rangeslider/lib/index.css";
-
-const API_KEY = process.env.REACT_APP_API_KEY;
-const LOGIN_ID = process.env.REACT_APP_LOGIN_ID;
-const ENV = process.env.REACT_APP_ENV;
-
-// console.log("API_KEY: ", process.env.REACT_APP_API_KEY);
-// console.log("LOGIN_ID: ", process.env.REACT_APP_LOGIN_ID);
 
 export default class FX extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      btnGreen: true,
+      loading: false,
       redirect: null,
       userReady: false,
       currentUser: { username: "" },
@@ -34,6 +31,9 @@ export default class FX extends Component {
       selectedSellCurrency: "EUR",
       selectedBuyCurrency: "USD",
       buyOrSell: "BUY",
+      amount: null,
+      quote: [],
+      timer: null,
     };
   }
 
@@ -44,13 +44,12 @@ export default class FX extends Component {
     this.currencyCloudData();
   }
 
+  btnChangeColor = () => {
+    this.setState({ btnGreen: !this.state.btnGreen });
+  };
+
   currencyCloudData = () => {
-    currencyCloud.authentication
-      .login({
-        environment: ENV,
-        loginId: LOGIN_ID,
-        apiKey: API_KEY,
-      })
+    login()
       .then(currencyCloud.reference.getAvailableCurrencies)
       .then((res) => {
         this.setState({
@@ -72,8 +71,14 @@ export default class FX extends Component {
           });
         }
       })
-      .then(currencyCloud.authentication.logout)
+      .then(logout)
       .catch(console.log);
+  };
+
+  setTimer = (e) => {
+    this.setState({
+      timer: e.target.value,
+    });
   };
 
   handleChangeSell = (e) => {
@@ -89,13 +94,41 @@ export default class FX extends Component {
   };
 
   handleAmount = (e) => {
-    return;
+    this.setState({ amount: e.target.value });
   };
 
-  handleSubmitQuoteMarket = (e) => {
-    // {{baseUrl}}/rates/detailed?buy_currency=EUR&sell_currency=USD&fixed_side=buy&amount=1000
+  getQuote = () => {
+    const quoteParams = {
+      buyCurrency: this.state.selectedBuyCurrency,
+      sellCurrency: this.state.selectedSellCurrency,
+      amount: this.state.amount,
+      fixedSide: this.state.buyOrSell.toLowerCase(),
+    };
+    return currencyCloud.retry(() => {
+      return currencyCloud.rates.get(quoteParams).then((res) => {
+        this.setState({ quote: res });
+      });
+    });
+  };
 
-    return;
+  handleGetQuoteMarket = (e) => {
+    e.preventDefault();
+    this.setState({
+      loading: true,
+    });
+    login()
+      .then(this.getQuote)
+      .then(logout)
+      .catch((err) => {
+        if (err instanceof currencyCloud.APIerror) {
+          console.log(err.toYAML());
+        } else {
+          console.log(err);
+        }
+      });
+    this.setState({
+      loading: false,
+    });
   };
 
   render() {
@@ -110,11 +143,16 @@ export default class FX extends Component {
       selectedSellCurrency,
       selectedBuyCurrency,
       buyOrSell,
+      amount,
+      loading,
+      quote,
     } = this.state;
 
     // console.log("selected sell currency: ", selectedSellCurrency);
     // console.log("activeBalances: ", activeBalances);
-
+    let btnClass = this.state.btnGreen
+      ? "btn btn-success btn-success:hover"
+      : "btn btn-check:checked+.btn-success:focus";
     const initCurrencySell = Object.keys(activeBalances[0]);
     const selectedAccountCurrency = selectedSellCurrency
       ? selectedSellCurrency
@@ -124,8 +162,7 @@ export default class FX extends Component {
         ? selectedBuyCurrency + selectedSellCurrency
         : selectedSellCurrency + selectedBuyCurrency;
 
-    console.log("pair ", chartCurrencyPair);
-    console.log("buy or sell ", buyOrSell);
+    console.log("timer: ", this.state.timer);
 
     return (
       <>
@@ -190,6 +227,7 @@ export default class FX extends Component {
                             method="post"
                             name="myform"
                             className="currency_market"
+                            onSubmit={this.handleGetQuoteMarket}
                           >
                             <div className="mb-3">
                               <div className="d-flex justify-content-between form-label">
@@ -251,35 +289,45 @@ export default class FX extends Component {
                                   name="amount"
                                   className="form-control input text-end ms-2"
                                   placeholder="Enter Amount"
-                                  // value={this.state.}
+                                  // value={amount}
                                   onChange={this.handleAmount}
                                 />
                               </div>
                             </div>
-
-                            {/* <div className="mb-3">
-                              <label className="form-label">
-                                Conversion Date
-                              </label>
-                              <div className="input-group mw-150">
-                                <div>
-                                  <TimeDatePicker />
-                                </div>
-                              </div>
-                            </div> */}
                             <div className="text-body">
                               By clicking on "Get a Quote" you agree with our
                               Terms of use
                             </div>
-                            <div className="btn mt-3">
+                            <div className="btn mb-1">
                               <button
                                 type="submit"
                                 name="quote"
-                                onSubmit={this.handleSubmitQuoteMarket}
-                                className="btn btn-success"
+                                onSubmit={this.handleGetQuoteMarket}
+                                className={btnClass}
+                                disabled={!amount || amount < 10}
                               >
+                                {loading && (
+                                  <>
+                                    <div>Getting your quote</div>
+                                    <span className="spinner-border spinner-border-sm"></span>
+                                  </>
+                                )}
                                 Get Quote
                               </button>
+                            </div>
+                            <div className="d-flex justify-content-between form-label">
+                              <div className="text-body">
+                                <div>Your exchange rate:</div>
+                                <div>Settlement date:</div>
+                                <div>Conversion date:</div>
+                                <CountDown value={this.setTimer} />
+                              </div>
+                              <div className="text-body">
+                                <div>1.0434 -inverse 0.9845-</div>
+                                <div>2 August 2022 @ 13:00</div>
+                                <div>2 August 2022 </div>
+                                <div>I am happy with this quote</div>
+                              </div>
                             </div>
                           </form>
                         </Tab.Pane>
@@ -456,7 +504,7 @@ export default class FX extends Component {
                               <button
                                 type="submit"
                                 name="quote"
-                                onSubmit={this.handleSubmitQuoteMarket}
+                                onSubmit={this.handleGetQuoteMarket}
                                 className="btn btn-success"
                               >
                                 Get Quote
@@ -472,7 +520,7 @@ export default class FX extends Component {
 
               <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6">
                 {/* <!-- TradingView Widget BEGIN --> */}
-                <div
+                {/* <div
                   className="tradingview-widget-container card"
                   style={{ height: "460px" }}
                 >
@@ -482,7 +530,7 @@ export default class FX extends Component {
                     locale="en"
                     autosize
                   />
-                </div>
+                </div> */}
                 {/* <!-- TradingView Widget END --> */}
               </div>
 
