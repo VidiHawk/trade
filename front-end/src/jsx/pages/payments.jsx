@@ -85,7 +85,7 @@ export default class Payments extends Component {
                               type="text"
                               name="usd_amount"
                               className="form-control text-end"
-                              value="1,234,347.00 USD"
+                              // value="1,234,347.00 USD"
                             />
                           </div>
                         </div>
@@ -104,7 +104,7 @@ export default class Payments extends Component {
                               type="text"
                               name="usd_amount"
                               className="form-control text-end"
-                              value="345,125.00 EUR"
+                              // value="345,125.00 EUR"
                             />
                           </div>
                         </div>
@@ -214,7 +214,7 @@ export default class Payments extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col-xl-9 col-lg-9 col-md-12">
+              <div className="col-xl-12 col-lg-12 col-md-12">
                 <div className="card">
                   <div className="card-body">
                     <div className="buyer-seller">
@@ -300,7 +300,7 @@ export default class Payments extends Component {
                   </div>
                 </div>
               </div>
-
+              {/* 
               <div className="col-xl-3 col-lg-3">
                 <div className="apps-download">
                   <div className="apps-download-content">
@@ -315,7 +315,7 @@ export default class Payments extends Component {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <div className="col-xl-12">
                 <div className="card">

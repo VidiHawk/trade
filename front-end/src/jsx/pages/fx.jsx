@@ -32,7 +32,7 @@ export default class FX extends Component {
       selectedBuyCurrency: "USD",
       buyOrSell: "BUY",
       amount: null,
-      quote: [],
+      quote: undefined,
       timer: null,
     };
   }
@@ -75,10 +75,8 @@ export default class FX extends Component {
       .catch(console.log);
   };
 
-  setTimer = (e) => {
-    this.setState({
-      timer: e.target.value,
-    });
+  countDownCallBack = (countDownData) => {
+    this.setState({ timer: countDownData });
   };
 
   handleChangeSell = (e) => {
@@ -141,15 +139,13 @@ export default class FX extends Component {
       activeBalances,
       availableCurrencies,
       selectedSellCurrency,
-      selectedBuyCurrency,
-      buyOrSell,
+      // selectedBuyCurrency,
+      // buyOrSell,
       amount,
       loading,
       quote,
     } = this.state;
 
-    // console.log("selected sell currency: ", selectedSellCurrency);
-    // console.log("activeBalances: ", activeBalances);
     let btnClass = this.state.btnGreen
       ? "btn btn-success btn-success:hover"
       : "btn btn-check:checked+.btn-success:focus";
@@ -157,12 +153,15 @@ export default class FX extends Component {
     const selectedAccountCurrency = selectedSellCurrency
       ? selectedSellCurrency
       : initCurrencySell;
-    const chartCurrencyPair =
-      buyOrSell === "BUY"
-        ? selectedBuyCurrency + selectedSellCurrency
-        : selectedSellCurrency + selectedBuyCurrency;
+    // const chartCurrencyPair =
+    //   buyOrSell === "BUY"
+    //     ? selectedBuyCurrency + selectedSellCurrency
+    //     : selectedSellCurrency + selectedBuyCurrency;
 
     console.log("timer: ", this.state.timer);
+    console.log("quote: ", quote);
+
+    console.log("activeBalances: ", activeBalances);
 
     return (
       <>
@@ -315,20 +314,14 @@ export default class FX extends Component {
                                 Get Quote
                               </button>
                             </div>
-                            <div className="d-flex justify-content-between form-label">
-                              <div className="text-body">
-                                <div>Your exchange rate:</div>
-                                <div>Settlement date:</div>
-                                <div>Conversion date:</div>
-                                <CountDown value={this.setTimer} />
-                              </div>
-                              <div className="text-body">
-                                <div>1.0434 -inverse 0.9845-</div>
-                                <div>2 August 2022 @ 13:00</div>
-                                <div>2 August 2022 </div>
-                                <div>I am happy with this quote</div>
-                              </div>
-                            </div>
+                            {quote && (
+                              <>
+                                <CountDown
+                                  initial="20"
+                                  fxCallBack={this.countDownCallBack}
+                                />
+                              </>
+                            )}
                           </form>
                         </Tab.Pane>
                         <Tab.Pane eventKey="limit">

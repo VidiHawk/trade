@@ -1,29 +1,62 @@
 import React from "react";
 
-export default function CountDown() {
-  const [timer, setTimer] = React.useState(20);
-  const id = React.useRef(null);
-  const clear = () => {
-    window.clearInterval(id.current);
-  };
-  React.useEffect(() => {
-    id.current = window.setInterval(() => {
-      setTimer((time) => time - 1);
-    }, 1000);
-    return () => clear();
-  }, []);
+export default class CountDown extends React.Component {
+  constructor(props) {
+    super(props);
 
-  React.useEffect(() => {
-    if (timer === 0) {
-      clear();
-    }
-  }, [timer]);
-  return (
-    <div className="countdown" value={timer}>
-      <div>
-        Quote expires in{" "}
-        <span style={{ color: "red", fontSize: "18px" }}>{timer}</span> seconds
+    this.state = {
+      count: Number(this.props.initial),
+    };
+
+    this.intervalRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.intervalRef.current = setInterval(() => {
+      if (this.state.count > 0) {
+        this.props.fxCallBack(this.state.count);
+        this.setState((prevState) => ({
+          count: prevState.count - 1,
+        }));
+      } else {
+        this.stopTimer();
+      }
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    this.stopTimer();
+  }
+
+  stopTimer = () => {
+    clearInterval(this.intervalRef.current);
+  };
+
+  render() {
+    return (
+      <div className="d-flex justify-content-between form-label">
+        <div className="text-body">
+          <div>Your exchange rate:</div>
+          <div>Settlement date:</div>
+          <div>Conversion date:</div>
+          <div>
+            <div>
+              Quote expires in{" "}
+              <span style={{ color: "red", fontSize: "18px" }}>
+                {this.state.count}
+              </span>{" "}
+              seconds
+            </div>
+            <button onClick={this.stopTimer}>STOP</button>
+          </div>
+        </div>
+        <div className="text-body">
+          <div>1.0434 -inverse 0.9845-</div>
+          <div>2 August 2022 @ 13:00</div>
+          <div>2 August 2022 </div>
+          <div>I am happy with this quote</div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }

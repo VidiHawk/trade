@@ -73,6 +73,21 @@ export default class SettingAccount extends Component {
                               </div>
                             </td>
                             <td>
+                              <div className="verify">
+                                <div className="verified">Priority</div>
+                              </div>
+                            </td>
+                            <td>
+                              <div className="verify">
+                                <div className="verified">
+                                  <span>
+                                    <i className="la la-arrow-right"></i>
+                                  </span>
+                                  <Link to={"#"}>Pay</Link>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
                               <div className="edit-option">
                                 <Link to={"#"}>
                                   <i className="fa fa-eye mx-2"></i>
@@ -83,16 +98,6 @@ export default class SettingAccount extends Component {
                                 <Link to={"#"}>
                                   <i className="fa fa-trash mx-2"></i>
                                 </Link>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="verify">
-                                <div className="verified">
-                                  <span>
-                                    <i className="la la-check"></i>
-                                  </span>
-                                  <Link to={"#"}>Verified</Link>
-                                </div>
                               </div>
                             </td>
                           </tr>
@@ -111,6 +116,21 @@ export default class SettingAccount extends Component {
                               </div>
                             </td>
                             <td>
+                              <div className="verify">
+                                <div className="verified">Regular</div>
+                              </div>
+                            </td>
+                            <td>
+                              <div className="verify">
+                                <div className="verified">
+                                  <span>
+                                    <i className="la la-arrow-right"></i>
+                                  </span>
+                                  <Link to={"#"}>Pay</Link>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
                               <div className="edit-option">
                                 <Link to={"#"}>
                                   <i className="fa fa-eye mx-2"></i>
@@ -121,16 +141,6 @@ export default class SettingAccount extends Component {
                                 <Link to={"#"}>
                                   <i className="fa fa-trash mx-2"></i>
                                 </Link>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="verify">
-                                <div className="not-verify">
-                                  <span>
-                                    <i className="la la-close"></i>
-                                  </span>
-                                  <Link to={"#"}>Not verified</Link>
-                                </div>
                               </div>
                             </td>
                           </tr>
@@ -151,6 +161,21 @@ export default class SettingAccount extends Component {
                               </div>
                             </td>
                             <td>
+                              <div className="verify">
+                                <div className="verified">Priority</div>
+                              </div>
+                            </td>
+                            <td>
+                              <div className="verify">
+                                <div className="verified">
+                                  <span>
+                                    <i className="la la-arrow-right"></i>
+                                  </span>
+                                  <Link to={"#"}>Pay</Link>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
                               <div className="edit-option">
                                 <Link to={"#"}>
                                   <i className="fa fa-eye mx-2"></i>
@@ -161,16 +186,6 @@ export default class SettingAccount extends Component {
                                 <Link to={"#"}>
                                   <i className="fa fa-trash mx-2"></i>
                                 </Link>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="verify">
-                                <div className="verified">
-                                  <span>
-                                    <i className="la la-check"></i>
-                                  </span>
-                                  <Link to={"#"}>Verified</Link>
-                                </div>
                               </div>
                             </td>
                           </tr>
